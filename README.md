@@ -10,9 +10,15 @@
 국토지반정보 통합DB센터의 데이터 중 건국대학교 부지 내외 시추공 데이터 91개를 선택하였다.
 시추공의 개수가 매우 한정적이므로 공간 보간 기법 중 크리깅을 활용해 데이터 수를 증강하였다.
 
-![input data](https://github.com/go0leum/rockhead_prediction/assets/111696539/e9fdff6f-2072-41ee-938a-406ce915b198)
+#### 기존 시추공 데이터
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/e9fdff6f-2072-41ee-938a-406ce915b198" width="543" height="362">
+</p>
 
-![input data-kriging](https://github.com/go0leum/rockhead_prediction/assets/111696539/67493edf-11df-4985-830b-3c38e067a0a0)
+#### 크리깅 데이터
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/67493edf-11df-4985-830b-3c38e067a0a0" width="543" height="362">
+</p>
 
 ## Machine Learning
 
@@ -33,7 +39,7 @@
 
 ### accuracy, precision, recall, f1 result
 
-#### 기존 데이터만 학습한 모델
+#### 기존 시추공 데이터만 학습한 모델
 |evaluation metrics|value|
 |---|---|
 |accuracy|0.9519|
@@ -51,18 +57,26 @@
 |f1 score|0.9762|
 
 ### confusion matrix
-#### 기존 데이터만 학습한 모델
-![eval_1](https://github.com/go0leum/rockhead_prediction/assets/111696539/9eadc94b-ac49-46da-8870-95596227f05b)
+#### 기존 시추공 데이터만 학습한 모델
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/9eadc94b-ac49-46da-8870-95596227f05b">
+</p>
 
 #### 크리깅 데이터를 추가하여 학습한 모델
-![eval_2](https://github.com/go0leum/rockhead_prediction/assets/111696539/d0819586-9d6b-432e-9cd9-9a0a3af4fedf)
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/d0819586-9d6b-432e-9cd9-9a0a3af4fedf">
+</p>
 
 ### prediction result
-#### 기존 데이터만 학습한 모델
-![output](https://github.com/go0leum/rockhead_prediction/assets/111696539/2c338011-0120-4a6e-8dcc-c0bc325a264d)
+#### 기존 시추공 데이터만 학습한 모델
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/2c338011-0120-4a6e-8dcc-c0bc325a264d" width="543" height="362">
+</p>
 
-### 크리깅 데이터를 추가하여 학습한 모델
-![output_kriging](https://github.com/go0leum/rockhead_prediction/assets/111696539/de6bb8a3-7b61-4bbd-a13a-cd88d0345d3c)
+#### 크리깅 데이터를 추가하여 학습한 모델
+<p align="center">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/de6bb8a3-7b61-4bbd-a13a-cd88d0345d3c"width="543" height="362">
+</p>
 
 ## references
 [1] 지윤수, 김한샘, 이문교, 조형익 and 선창국. (2021). MLP 기반의 서울시 3차원 지반공간모델링 연구. 한국지반공학회논문집, 37(5), 47-63.
