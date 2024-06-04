@@ -70,12 +70,12 @@
 ### prediction result
 #### 기존 시추공 데이터만 학습한 모델
 <p align="center">
-    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/2c338011-0120-4a6e-8dcc-c0bc325a264d" width="543" height="362">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/554cf3af-c524-41a9-b89f-e0d4c8ad7272" width="505" height="385">
 </p>
 
 #### 크리깅 데이터를 추가하여 학습한 모델
 <p align="center">
-    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/de6bb8a3-7b61-4bbd-a13a-cd88d0345d3c"width="543" height="362">
+    <img src="https://github.com/go0leum/rockhead_prediction/assets/111696539/8625c3e7-5776-4e52-bd10-902ea5ce743d">
 </p>
 
 ## references
