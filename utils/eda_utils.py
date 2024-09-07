@@ -36,9 +36,9 @@ def box_plot(data, x_col, y_col, figure_name):
     plt.show()
 
 
-def scatter_relation(data, x_col, y_col, figure_name, hue=None):
+def scatter_relation(data, x_col, y_col, s, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=data, x=x_col, y=y_col, hue=hue)
+    sns.scatterplot(data=data, x=x_col, y=y_col, hue=hue, s=s)
     plt.title(figure_name)
     plt.xlabel(x_col)
     plt.ylabel(y_col)
