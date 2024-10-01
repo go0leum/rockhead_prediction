@@ -19,6 +19,7 @@ def count_historgram(data, column_name, figure_name):
 
 def correlation_matrix(data, figure_name, drop_column=False):
     numeric_columns = data.select_dtypes(include=['int64', 'float64']).columns
+
     if drop_column:
         correlation_matrix = data[numeric_columns].drop(columns=[drop_column]).corr()
 
@@ -46,8 +47,10 @@ def scatter_relation(data, x_col, y_col, s, figure_name, hue=None):
 
 def pairplot(data, figure_name, drop_column=False):
     numeric_columns = data.select_dtypes(include=['int64', 'float64']).columns
+
     if drop_column:
-        correlation_matrix = data[numeric_columns].drop(columns=[drop_column]).corr()
+        data = data[numeric_columns].drop(columns=[drop_column])
+
     plt.figure(figsize=(10, 10))
     sns.pairplot(data)
     plt.title(figure_name)
