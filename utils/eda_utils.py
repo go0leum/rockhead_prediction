@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 def distribution_histogram(data, x_col, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
@@ -22,9 +23,11 @@ def correlation_matrix(data, figure_name, drop_column=False):
 
     if drop_column:
         correlation_matrix = data[numeric_columns].drop(columns=[drop_column]).corr()
+    else:
+        correlation_matrix = data[numeric_columns].corr()
 
     plt.figure(figsize=(12, 8))
-    sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm', linewidths=0.5)
+    sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm', vmin=-1, vmax=1, linewidths=0.5)
     plt.title(figure_name)
     plt.show()
 
