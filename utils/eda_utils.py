@@ -22,7 +22,7 @@ def correlation_matrix(data, figure_name, drop_column=False):
     numeric_columns = data.select_dtypes(include=['int64', 'float64']).columns
 
     if drop_column:
-        correlation_matrix = data[numeric_columns].drop(columns=[drop_column]).corr()
+        correlation_matrix = data[numeric_columns].drop(columns=drop_column).corr()
     else:
         correlation_matrix = data[numeric_columns].corr()
 
@@ -52,9 +52,27 @@ def pairplot(data, figure_name, drop_column=False):
     numeric_columns = data.select_dtypes(include=['int64', 'float64']).columns
 
     if drop_column:
-        data = data[numeric_columns].drop(columns=[drop_column])
+        data = data[numeric_columns].drop(columns=drop_column)
 
     plt.figure(figsize=(10, 10))
     sns.pairplot(data)
     plt.title(figure_name)
     plt.show()
+
+def remove_outlier(data, figure_name):
+    Q1 = np.percentile(data[figure_name], 25, method='midpoint')
+    Q3 = np.percentile(data[figure_name], 75, method='midpoint')
+
+    IQR = Q3 - Q1
+    upper = Q3+1.5*IQR
+    lower = Q1-1.5*IQR
+
+    upper_array = np.where(data[figure_name] >= upper)[0]
+    lower_array = np.where(data[figure_name] <= lower)[0]
+
+    outliers = data.loc[np.concatenate((upper_array, lower_array)).tolist()]
+
+    return_data = data.drop(index=upper_array)
+    return_data = return_data.drop(index=lower_array)
+
+    return data, outliers
