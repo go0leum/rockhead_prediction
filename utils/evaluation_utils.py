@@ -14,7 +14,7 @@ def evaluation(y_true, y_pred, n, k):
 
 def barplot(data, x_col, y_col, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=x_col, y=y_col, data=data, hue=hue)
+    sns.barplot(x=data[x_col], y=data[y_col], data=data, hue=hue)
     plt.title(figure_name)
     plt.xlabel(x_col)
     plt.ylabel(y_col)
