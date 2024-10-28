@@ -1,6 +1,7 @@
 from sklearn.metrics import mean_absolute_error, mean_squared_error, root_mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.graph_objects as go
 
 def evaluation(y_true, y_pred, n, k):
     
@@ -19,3 +20,42 @@ def barplot(data, x_col, y_col, figure_name, hue=None):
     plt.xlabel(x_col)
     plt.ylabel(y_col)
     plt.show()
+
+def boxplot_2(data, x_col, y_col, figure_name):
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x=x_col, y=y_col, data=data)
+    plt.title(figure_name)
+    plt.xlabel(x_col)
+    plt.ylabel(y_col)
+    plt.show()
+
+def surface_3d(data, x_col, y_col, z_col):
+    fig = go.Figure(data=[go.Surface(z=data[z_col], x=data[x_col], y=data[y_col])])
+    fig.update_layout(
+        title='3d bedrock start depth',
+        autosize=False,
+        width=1000,
+        height=800,
+        margin=dict(l=65, r=50, b=65, t=90)
+    )
+
+    fig.show()
+
+def contour_plot(data, x_col, y_col, z_col):
+    fig = go.Figure(data=go.Contour(
+        z=data[z_col], x=data[x_col], y=data[y_col],
+        colorscale='Viridis',
+        contours=dict(
+            start= -1,
+            end= 1,
+            size= 0.2
+        )
+    ))
+
+    fig.update_layout(
+        mapbox_style="open-street-map",
+        mapbox_center=dict(lat=37.5665, lon=126.9780),  # 서울 중심 좌표
+        mapbox_zoom=10
+    )
+
+    fig.show()
