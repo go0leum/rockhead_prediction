@@ -76,3 +76,15 @@ def remove_outlier(data, figure_name):
     return_data = return_data.drop(index=lower_array)
 
     return data, outliers
+
+def prediction_plot(data, col1, col2, c):
+    sc1 = plt.scatter(data[col1], data[col2], c=data[c], cmap='viridis', alpha=0.5)
+    max_val = max(data[col1].max(), data[col2].max())
+    
+    plt.figure(figsize=(10, 10))
+    plt.plot([0, max_val], [0, max_val], color='red', linestyle='--', label="y=x")
+    plt.xlabel(col1)
+    plt.ylabel(col2)
+    plt.colorbar(sc1, label=c)  # 색상 막대 추가
+    plt.grid(True)
+    plt.show()
