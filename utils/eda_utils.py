@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import geopandas as gpd
+import libpysal as ps
+from pysal.explore import esda
+from tqdm import tqdm
 
 def distribution_histogram(data, x_col, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
@@ -40,9 +44,9 @@ def box_plot(data, x_col, y_col, figure_name):
     plt.show()
 
 
-def scatter_relation(data, x_col, y_col, s, figure_name, hue=None):
+def scatter_relation(data, x_col, y_col, s, figure_name, hue=None, hue_norm=None):
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=data, x=x_col, y=y_col, hue=hue, s=s)
+    sns.scatterplot(data=data, x=x_col, y=y_col, hue=hue, s=s, hue_norm=hue_norm)
     plt.title(figure_name)
     plt.xlabel(x_col)
     plt.ylabel(y_col)
@@ -88,3 +92,43 @@ def prediction_plot(data, col1, col2, c):
     plt.colorbar(sc1, label=c)  # 색상 막대 추가
     plt.grid(True)
     plt.show()
+    
+def min_distance(distance_range, data):
+
+    disconnedted_flag = 0
+    island_flag = 0
+
+    data = data[['x','y','depth_start']]
+
+    # GeoDataFrame으로 변환
+    gdf = gpd.GeoDataFrame(data, geometry=gpd.points_from_xy(data.x, data.y))
+
+    y = gdf['depth_start']  # 분석할 변수명을 지정
+
+    for distance in tqdm(distance_range):
+        # 고정 거리 밴드 가중치 행렬 
+        w = ps.weights.DistanceBand.from_dataframe(gdf, threshold=distance, silence_warnings = True)
+        
+        island_count = len(w.islands)
+        min_neighbors = w.min_neighbors
+        
+        if island_count == 0 and island_flag == 0:
+            island_flag = 1
+            island_distance = distance
+            lisa = esda.Moran_Local(y, w)
+            island_morans_i = lisa.Is.mean()
+            island_p_value = lisa.p_sim.mean()
+            island_z_value = lisa.z_sim.mean()
+            
+        elif min_neighbors > 1 and disconnedted_flag == 0:
+            disconnedted_flag = 1
+            disconnected_distance = distance
+            lisa = esda.Moran_Local(y, w)
+            disconnected_morans_i = lisa.Is.mean()
+            disconnected_island_p_value = lisa.p_sim.mean()
+            disconnected_island_z_value = lisa.z_sim.mean()
+
+    print(f"all connected 최소 거리 밴드: {disconnected_distance}m, Moran's I: {disconnected_morans_i}, p-value: {disconnected_island_p_value}, z-value: {disconnected_island_z_value}")
+    print(f"not island 최소 거리 밴드: {island_distance}m, Moran's I: {island_morans_i}, p-value: {island_p_value}, z-value: {island_z_value}")
+
+    return disconnected_distance
