@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
-import geopandas as gpd
-import libpysal as ps
-from pysal.explore import esda
-from tqdm import tqdm
+import plotly.graph_objects as go
+import utm # 좌표계 변환
 
 def distribution_histogram(data, x_col, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
