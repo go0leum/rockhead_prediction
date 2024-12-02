@@ -93,15 +93,15 @@ def prediction_plot(data, col1, col2, c):
     plt.grid(True)
     plt.show()
     
-def min_distance(distance_range, data):
+def anseline_moran_I(distance_range, data):
 
-    disconnedted_flag = 0
+    disconnected_flag = 0
     island_flag = 0
 
-    data = data[['x','y','depth_start']]
+    data_copy = data[['x','y','depth_start']]
 
     # GeoDataFrame으로 변환
-    gdf = gpd.GeoDataFrame(data, geometry=gpd.points_from_xy(data.x, data.y))
+    gdf = gpd.GeoDataFrame(data_copy, geometry=gpd.points_from_xy(data_copy.x, data_copy.y))
 
     y = gdf['depth_start']  # 분석할 변수명을 지정
 
@@ -115,20 +115,27 @@ def min_distance(distance_range, data):
         if island_count == 0 and island_flag == 0:
             island_flag = 1
             island_distance = distance
-            lisa = esda.Moran_Local(y, w)
-            island_morans_i = lisa.Is.mean()
-            island_p_value = lisa.p_sim.mean()
-            island_z_value = lisa.z_sim.mean()
             
-        elif min_neighbors > 1 and disconnedted_flag == 0:
-            disconnedted_flag = 1
+        elif min_neighbors > 1 and disconnected_flag == 0:
+            disconnected_flag = 1
             disconnected_distance = distance
-            lisa = esda.Moran_Local(y, w)
-            disconnected_morans_i = lisa.Is.mean()
-            disconnected_island_p_value = lisa.p_sim.mean()
-            disconnected_island_z_value = lisa.z_sim.mean()
+            lisa = esda.Moran_Local(y, w, permutations=499)
 
-    print(f"all connected 최소 거리 밴드: {disconnected_distance}m, Moran's I: {disconnected_morans_i}, p-value: {disconnected_island_p_value}, z-value: {disconnected_island_z_value}")
-    print(f"not island 최소 거리 밴드: {island_distance}m, Moran's I: {island_morans_i}, p-value: {island_p_value}, z-value: {island_z_value}")
+            neighbors_count = [len(neighbors) for neighbors in w.neighbors.values()]
+            data['neighbors'] = neighbors_count
+            data['moran_I'] = lisa.Is
+            data['p-value'] = lisa.p_sim
+            data['z-score'] = lisa.z_sim
+            data['cotype'] = lisa.q
 
-    return disconnected_distance
+    if island_flag == 1:
+        print(f"not island minimum distance band: {island_distance}m")
+    
+    if disconnected_flag == 1:
+        print(f"all connected minimum distance band: {disconnected_distance}m")
+
+    if island_flag == 0 and disconnected_flag == 0:
+        print(f"There is no minimum distance in distance_range {distance_range}")
+        return None
+
+    return disconnected_distance, data
