@@ -30,8 +30,8 @@ def idw_interpolation(dists, indices, neighbor_values, power):
         
     return np.array(interpolated_values)
 
-def select_points_by_value(points, values, num_point): 
+def select_points_by_value(points, values, num_point, term): 
     sorted_idx = np.argsort(values) 
-    selected_points = points[sorted_idx][:num_point] 
-    selected_values = values[sorted_idx][:num_point] 
+    selected_points = points[sorted_idx][::term][:num_point] 
+    selected_values = values[sorted_idx][::term][:num_point] 
     return selected_points, selected_values
