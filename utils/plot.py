@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
 import utm # 좌표계 변환
+from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_squared_error, r2_score
+import numpy as np
 
 def distribution_histogram(data, x_col, figure_name, hue=None):
     plt.figure(figsize=(10, 6))
@@ -116,14 +118,19 @@ def contour_plot(data, x_col, y_col, z_col):
 
     fig.show()
 
-def prediction_plot(data, col1, col2, c):
-    sc1 = plt.scatter(data[col1], data[col2], c=data[c], cmap='viridis', alpha=0.5)
-    max_val = max(data[col1].max(), data[col2].max())
+def prediction_eval(y_test, pred_y, c):
+    max_val = max(max(y_test), max(pred_y))
+    mae = mean_absolute_error(y_test, pred_y)
+    mse = mean_squared_error(y_test, pred_y)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, pred_y)
     
     plt.figure(figsize=(10, 10))
+    sc1 = plt.scatter(y_test, pred_y, c=c, cmap='viridis', alpha=0.5)
     plt.plot([0, max_val], [0, max_val], color='red', linestyle='--', label="y=x")
-    plt.xlabel(col1)
-    plt.ylabel(col2)
-    plt.colorbar(sc1, label=c)  # 색상 막대 추가
+    plt.text(0.1, 50, f"R2={r2:.2f}\nMAE={mae:.2f}\nRMSE={rmse:.2f}")
+    plt.xlabel('true')
+    plt.ylabel('pred')
+    plt.colorbar(sc1, label='depth')  # 색상 막대 추가
     plt.grid(True)
     plt.show()
